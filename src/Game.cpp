@@ -1,6 +1,7 @@
 #include "Game.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <glm/glm.hpp>
 #include <iostream>
 
 // constructor
@@ -65,6 +66,47 @@ void Game::Initialize()
     isRunning = true;
 }
 
+glm::vec2 playerPosition;
+glm::vec2 playerVelocity;
+
+// this function sets up the game objects
+void Game::Setup()
+{
+    playerPosition = glm::vec2(10.0, 20.0);
+    playerVelocity = glm::vec2(0.5, 0.0);
+}
+
+// this function updates the game objects
+void Game::Update()
+{
+    playerPosition.x += playerVelocity.x;
+    playerPosition.y += playerVelocity.y;
+}
+
+// this function renders the game objects
+void Game::Render()
+{
+    SDL_SetRenderDrawColor(renderer, 21, 21, 21, 255);
+    SDL_RenderClear(renderer);
+
+    // loads a PNG texture from a file
+    SDL_Surface *surface = IMG_Load("./assets/images/tank-tiger-right.png");
+    SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
+    SDL_FreeSurface(surface);
+
+    // what is the destination rectangle that the texture will be rendered to
+    SDL_Rect dstRect = {
+        static_cast<int>(playerPosition.x),
+        static_cast<int>(playerPosition.y),
+        32,
+        32};
+    SDL_RenderCopy(renderer, texture, NULL, &dstRect);
+    SDL_DestroyTexture(texture);
+
+    // present the renderer
+    SDL_RenderPresent(renderer);
+}
+
 // this function runs the game loop
 void Game::Run()
 {
@@ -75,10 +117,6 @@ void Game::Run()
         Update();
         Render();
     }
-}
-
-void Game::Setup()
-{
 }
 
 // this function processes the input events
@@ -105,32 +143,6 @@ void Game::ProcessInput()
             break;
         }
     }
-}
-
-// this function updates the game objects
-void Game::Update()
-{
-    // TODO ...
-}
-
-// this function renders the game objects
-void Game::Render()
-{
-    SDL_SetRenderDrawColor(renderer, 21, 21, 21, 255);
-    SDL_RenderClear(renderer);
-
-    // loads a PNG texture from a file
-    SDL_Surface *surface = IMG_Load("./assets/images/tank-tiger-right.png");
-    SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
-    SDL_FreeSurface(surface);
-
-    // what is the destination rectangle that the texture will be rendered to
-    SDL_Rect dstRect = {10, 10, 32, 32};
-    SDL_RenderCopy(renderer, texture, NULL, &dstRect);
-    SDL_DestroyTexture(texture);
-
-    // present the renderer
-    SDL_RenderPresent(renderer);
 }
 
 // this function destroys the window and renderer
