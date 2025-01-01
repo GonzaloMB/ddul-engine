@@ -3,12 +3,16 @@
 
 #include <SDL2/SDL.h>
 
+const int FPS = 60;
+const int MILLISECS_PER_FRAME = 1000 / FPS;
+
 // this class represents the game
 class Game
 {
     // private members of the class
 private:
     bool isRunning;
+    int millisecsPreviousFrame = 0;
     SDL_Window *window;
     SDL_Renderer *renderer;
 

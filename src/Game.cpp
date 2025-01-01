@@ -79,6 +79,15 @@ void Game::Setup()
 // this function updates the game objects
 void Game::Update()
 {
+    // if we are to fast, waste some time until we reach the target frame time
+    while (!SDL_TICKS_PASSED(
+        SDL_GetTicks(),
+        millisecsPreviousFrame + MILLISECS_PER_FRAME))
+        ;
+
+    // store the current time in milliseconds
+    millisecsPreviousFrame = SDL_GetTicks();
+
     playerPosition.x += playerVelocity.x;
     playerPosition.y += playerVelocity.y;
 }
