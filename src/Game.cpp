@@ -80,10 +80,11 @@ void Game::Setup()
 void Game::Update()
 {
     // if we are to fast, waste some time until we reach the target frame time
-    while (!SDL_TICKS_PASSED(
-        SDL_GetTicks(),
-        millisecsPreviousFrame + MILLISECS_PER_FRAME))
-        ;
+    int timeToWait = MILLISECS_PER_FRAME - (SDL_GetTicks() - millisecsPreviousFrame);
+    if (timeToWait > 0 && timeToWait <= MILLISECS_PER_FRAME)
+    {
+        SDL_Delay(timeToWait);
+    }
 
     // store the current time in milliseconds
     millisecsPreviousFrame = SDL_GetTicks();
