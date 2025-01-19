@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Game.h"
+#include "./Game/Game.h"
 
 // constructor
 int main(int arfc, char *argv[])
